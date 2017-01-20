@@ -1,0 +1,385 @@
+= Angular入门实战
+翟亮 <zhailiang@pinzhi365.com>
+v1.0 {docdate}
+:toc: left
+:toc-title: 目录
+:toclevels: 3
+:copyright: 北京新亮宁达科技有限公司
+:icons: font
+:sectnums:
+:imagesdir: images/angular
+:sectanchors:
+:source-highlighter: pygments
+
+== 开始Angular开发
+
+欢迎各位同学，从现在开始，我们会正式开始Angular框架的学习。在这一章里，我们会学习到以下这些内容：
+
+. 首先,我们会讲解angular的程序架构，在这个过程中大家会了解到一个标准的Angular程序由哪些构建块组成。
+. 然后,我们会学习如何搭建Angular开发环境。这里会讲解Angular的官方命令行工具: Angular CLI。同时我们也会学习一个标准的Angular项目的目录结构是怎样的。
+. 最后,我们会运用本章学到的知识开发在线竞拍程序Auction的第一个版本，并在这个过程中强化对Angular的核心概念:组件（Component）的理解。
+
+好，本章的学习内容就是这些，让我们正式开始。
+
+=== Angular程序架构
+
+首先让我们通过一张图，对Angular的程序架构有一个大概的印象。
+
+.Angular程序架构
+image::1.png[Angular,600]
+
+从图中我们可以看到，一个Angular应用，至少需要包含一个模块和一个组件。
+
+组件(Component):: 组件是Angular应用的基本构建块，你可以把一个组件理解为一段带有业务逻辑和数据的Html。组件之间可以有父子关系，就像html中，Table标签可以包含tr标签一样，一个组件可以包含多个子组件。组件可以调用服务。也就是Service.
+
+服务(Service):: 服务用来封装可重用的业务逻辑，比如获取商品信息的逻辑，在商品列表页需要，在订单详情页也会需要，这时就可以把获取商品信息的逻辑封装到一个服务里，然后在不同的组件中去调用。服务之间也可以互相调用。
+
+指令(Directive):: 第三个概念在图中没有展示，但是也是Angular的重要组成部分，就是指令。指令允许你向html元素添加自定义的行为，比如，你可以写一个自动完成的指令，为一个<input>标签添加一个自动完成的功能。Angular框架内置了大量的指令来帮我们解决日常开发中常见的一些问题，在课程中我会逐步的教给大家。
+
+模块(Module):: 模块用来将应用中不同的部分组织成一个Angular框架可以理解的单元。你可以把组件、服务、指令理解成乐高积木中各种颜色、各种大小、各种形状的小块。而模块则是一个一个的小塑料袋。对乐高来说，这些小块可以组成一个汽车，我把他们放一个塑料袋里，那些小块可以组成一个轮船，我们他们放另一个塑料袋里。对Angular来说，这些组件、服务、指令放一起，可以提供登录注册功能，我就把他们放在登录注册模块里，那些组件、服务和指令在一起，可以提供购物车功能，我就把他们放在购物车模块里。如果下一个程序也需要登录注册，那我直接把登录注册模块引入下一个项目就Ok了。总之一句话，组件、服务和指令用来完成功能，模块用来打包和分发。
+
+好,Angular的程序架构先介绍到这里，Angular中还有一些其它概念，我们学到的时候再介绍，如果在这里一下灌输一堆概念给大家，大家一是记不住，二是理解不了。
+
+在这一章里，你只需要理解我刚才讲的那4个概念，组件、服务、指令和模块就可以了，下面我们动手来写一个Angular程序，让大家对上面这些概念有一个直观的认识，看看它们在程序里究竟长什么样子。
+
+[NOTE]
+.指令与组件和服务的区别
+====
+指令与组件的不同:: 指令不与一段html绑定，同一个指令，例如上面说的自动完成指令，即可以加到一个input上，也可以加到一个textarea上。而组件是与一段html绑定的，组件自带一段html，当一个组件写好后，这个组件的html就被决定了。只要你往页面上加入某个组件，就会相应的加入一段html。
+
+指令与服务的不同:: 服务不能直接添加到html中。而是只能在组件或指令的代码中去调用。也就是说，服务对于html页面来说，是不可见的。
+====
+
+=== 安装Angular开发环境
+
+俗话说的好，公欲善其事，必先利其器。在开发之前，先要把准备工作做好，这个准备工作，就是安装Angular开发环境。
+
+==== 安装NodeJs
+
+安装NodeJS非常简单，在百度上搜索nodejs，然后进入官网，然后下载符合你操作系统的安装包，然后下一步下一步把它装上就OK了。
+
+.安装NodeJS
+image::2.png[Angular,600]
+
+NodeJS安装好以后，你会得到一个命令行工具：npm，我们使用它来安装下一个工具。
+
+==== 安装AngularCLI
+
+AngularCLI 是 Angular官方提供的命令行工具，你可以使用下面的命令来安装它。
+
+ npm install -g angular-cli
+
+安装完毕后，你可以通过 `ng -v` 命令查看安装结果。
+
+.验证angular-cli安装
+image::3.png[Angular,600]
+
+==== 安装WebStorm
+
+这是我们的集成开发工具，具体安装这里不演示了，就是常规的下一步下一步就OK了。
+
+OK，到这里为止，我们已经把需要的工具都安装好了，下面来创建项目
+
+=== 创建项目
+
+使用下面的命令创建新的Angular项目:
+
+ ng new auction
+
+auction是我们项目的名字。执行这个命令后，angular命令行工具会在当前目录下生成一个名为auction的文件夹，然后在文件夹中生成一个包含大量目录和文件的新项目.
+
+整体的项目结构如下图所示，让我们来花一些时间来浏览一下生成的目录和文件。
+
+.基本项目结构
+image::4.png[Angular,400]
+
+IMPORTANT: 命令行工具是按照特定的规则生成的这些文件和目录，如果改变这些文件的位置或重命名文件，都可能导致命令行工具的其它功能失败。所以，除非你明确的知道你在干什么，否则不要改这些文件。
+
+好，我们先来看一下第一层的目录和文件：
+
+[cols="1,3",options="header"]
+|===
+|名称
+|描述
+
+|e2e
+|端到端测试目录，包含基本的测试桩。我们会在后面的测试章节详细介绍。
+
+|node_modules
+|标准的npm模块目录，任何自己编写的代码都不应该放在这里。
+
+|src
+|应用源代码目录。你的代码都应该写在这里。
+
+|angular-cli.json
+|angular命令行工具配置文件。
+
+|karma.conf.js
+|karma是一个单元测试执行器，这是karma的配置文件。我们会在后面的测试章节详细介绍。
+
+|package.json
+|标准的npm工具配置文件。
+
+|protractor.conf.js
+|e2e测试执行器配置文件。我们会在后面的测试章节详细介绍。
+
+|README.md
+|标准的readme文件，包含了angular cli项目的标准说明。
+
+|tslint.json
+|TSLint的配置文件，定义了TypeScript代码质量检查的规则。
+|===
+
+在本章中，我们会修改package.json和angular-cli.json来引入一些其它的第三方依赖，如JQuery和Bootstrap，其它文件都不需要修改。
+
+下面让我们看一下src目录下包含的目录和文件，同样的，在现在这个阶段，如果你不确定他们的作用，就不要动他们。
+
+[cols="1,3",options="header"]
+|===
+|名称
+|描述
+
+|app
+|包含应用的组件和模块，绝大部分代码写在这里。
+
+|assets
+|空文件夹，用来存储静态资源，比如图片。
+
+|environments
+|环境配置，使你可以在不同的环境，比如开发环境，测试环境和生产环境下公用一套代码。
+
+|favicon.ico
+|没什么说的，图标
+
+|index.html
+|整个应用的根html。注意，这个文件里有一个<app-root>标签
+
+|main.ts
+|web应用的入口点。Angular通过这个文件来启动。
+
+|pollyfills.ts
+|用来导入一些必要的库，以使angular可以正常的运行在某些老版本的浏览器中。
+
+|styles.css
+|全局样式。
+
+|test.ts
+|单元测试的入口点
+
+|tsconfig.json
+|TypeScript编译器的配置。
+|===
+
+好，现在你对命令行工具都生成了什么有了一个大概的了解，让我们把精力集中到最关键的几个文件上，看一下他们里面的内容。
+
+==== AppComponent
+
+前面我们说过，一个Angular程序至少需要一个模块和一个组件，而命令行工具已经帮我们把他们生成出来了，就是这两个文件: app.module.ts和 app.component.ts
+
+首先让我们看一下app.component.ts, 他是整个应用的基础，你可以把它理解成一个地基，我们会在上面盖起高楼大厦。
+
+.app.component.ts
+[source,typescript]
+----
+import { Component } from '@angular/core'; <1>
+
+@Component({ <2>
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent { <3>
+  title = 'app works!';
+}
+----
+<1> 引入Component注解
+<2> 用Component注解定义组件，以及组件中的属性
+<3> 定义组件的控制器
+
+让我们仔细看下代码，首先，第一行 引入了一个叫Component的注解，这个注解来自angular的核心模块
+
+然后，3-7行用这个注解定一个了一个组件，以及组件中的属性。
+
+最后，8-10行定义了这个组件的控制器，这个控制器只有一个属性，叫做title.
+
+8-10行是一个标准的TypeScript类，Component注解告诉Angular框架，这个类在运行时，应该被作为Angular的组件来处理。
+
+Component注解声明了一个selector属性，这个属性的意思这个组件可以通过 app-root这样一个html标签来调用。还记得index.html文件中的app-root标签么？它的意思就是：在这里展示app-root组件的内容。
+
+templateUrl 指定一个html文件作为组件的内容模板，最终在index.html文件中app-root标签的位置，将展示这个html文件中的内容。
+
+类似的，styleUrls指定一组css文件，你可以在这些css文件中编写html模板中要用到的样式。
+
+最后，我们看到AppComponent类有一个title属性，这个属性的值会被展示到最终的浏览器中页面中。怎么展示呢？让我们看一下app.component.html。
+
+.app.component.html
+[source,html]
+----
+<h1>
+  {{title}}
+</h1>
+----
+
+这个文件中只有一个简单的h1标签，还有一个用双大括号括起来的title属性，这是最常见的将组件中的值绑定到模板中的方法，在实际运行时，angular会用AppComponent类中title属性的值替换掉双大括号title.这个语法叫做单向数据绑定，后面我们会频繁的用这个语法来在模板中显示数据。
+
+我们已经看过了AppComponent，下面再来看一下AppMoudle。
+
+==== AppModule
+
+.app.module.ts
+[source,typescript]
+----
+import { BrowserModule } from '@angular/platform-browser'; <1>
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+
+import { AppComponent } from './app.component'; <2>
+
+@NgModule({ <3>
+  declarations: [ <4>
+    AppComponent
+  ],
+  imports: [ <5>
+    BrowserModule,
+    FormsModule,
+    HttpModule
+  ],
+  providers: [], <6>
+  bootstrap: [AppComponent] <7>
+})
+export class AppModule { } <8>
+----
+<1> 引入必须的angular依赖
+<2> 引入AppComponent
+<3> 使用NgModule注解将AppModule类声明为一个angular模块。
+<4> 声明模块提供的组件和指令
+<5> 引入应用需要的其它模块
+<6> 声明此模块提供的服务
+<7> 声明使用哪个组件作为整个应用的主组件
+<8> 输出一个空类.它将根据上面的注解的配置，被angular作为一个模块来加载
+
+与app component类似，一个模块也是一个带着注解的TypeScript类， 最上面是一组import，引入这个模块需要的东西，然后，用NgModule注解声明了一个模块。
+
+在这个模块的声明中，
+
+首先,使用declarations属性声明了模块中有什么东西，现在模块中只有一个组件，就是AppComponent.
+
+IMPORTANT: 这里只能声明组件和指令。
+
+其次，使用imports属性声明了要让应用正常运转，还需要什么东西，也就是这个模块依赖的其它模块。这里声明了一些angular提供的模块。其中BrowserModule是开发web应用的必选依赖，FormsModule是处理表单的模块，我们会在表单处理章节详细介绍其内容和功能。HttpModule提供http服务，我们会在与服务器通讯章节介绍其内容和功能。
+
+NOTE: 当你引用了一个模块以后，你就可以在你的应用中使用这个模块提供的组件、指令和服务。
+
+下一个属性是 providers, 默认情况下它是空的，它用来声明模块中提供了什么服务。我们会在依赖注入章节详细解释这里的配置。
+
+IMPORTANT: 这里只能声明服务。
+
+最后，bootstrap属性声明了模块的入口组件是什么组件。
+
+OK ，到这里我们已经看完了命令行自动生成的模块和组件，下面我们来看一下，整个应用是如何启动的。
+
+==== 启动Angular应用
+
+让我们打开 angular-cli.json
+
+.angular-cli.json
+[source,json]
+----
+{
+  "apps": [
+    {
+      "root": "src", <1>
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "prefix": "app", <2>
+      "index": "index.html",
+      "main": "main.ts", <3>
+      "test": "test.ts",
+      "tsconfig": "tsconfig.json",
+      "mobile": false,
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environments": {
+        "source": "environments/environment.ts",
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ]
+  ...忽略其他属性
+}
+----
+<1> 应用所在的1级目录名
+<2> 应用所在的2级目录名
+<3> 应用的入口文件
+
+在这个文件中有一个名为apps的数组，数组中的对象有一个main属性，默认情况下，它指向src/app/main.ts文件，main.ts文件负责引导Angular应用启动，让我们看看这个文件的内容。
+
+.main.ts
+[source,typescript]
+----
+import './polyfills.ts'; <1>
+
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'; <2>
+import { enableProdMode } from '@angular/core'; <3>
+import { environment } from './environments/environment'; <4>
+import { AppModule } from './app/app.module'; <5>
+
+if (environment.production) { <6>
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule); <7>
+----
+<1> 导入一些必要的库，以使angular可以正常的运行在某些老版本的浏览器中。
+<2> 导入angular的platform-browser-dynamic模块提供的platformBrowserDynamic方法。这个方法会告诉angular使用哪个模块来启动整个应用。
+<3> 导入angular的core模块提供的enableProdMode方法，这个方法用来关闭Angular的开发者模式。
+<4> 导入环境配置，我们会在打包部署章节详细介绍angular对多环境的支持
+<5> 导入AppModule
+<6> 如果是生产环境，则关闭Angular的开发者模式。
+<7> 调用bootstrapModule方法，传入AppModule作为启动模块来启动应用。
+
+这里是一个angular应用的起始点，整个程序通过这里开始运行，加载了AppModule模块以后，angular会分析AppModule需要依赖哪些模块，并加载那些模块，然后以此类推，直到加载完所有所需的依赖。当加载完成后，angular会在index.html中寻找启动模块(AppModule)指定的主组件(AppComponent)对应的标签(app-root)，然后用主组件(AppComponent)指定的模板的内容替换掉<app-root>标签。在这个过程完成前，页面上将会展示<app-root>标签中的内容，也就是“Londing...”这样一个字符串。
+
+好，讲解完整个启动过程，让我们用下面的命令来启动当前的项目，看一下实际的效果。
+
+ npm run start
+
+启动后项目如图所示:
+
+.App Works!
+image::5.png[Angular,400]
+
+当前的开发环境会自动侦测src目录下的变动，对任何文件的修改都会使服务器自动加载修改后的文件，然后刷新页面，例如，我们将AppComponent中的title属性改为“慕课网Angular入门实战”。改完后页面会自动刷新并显示新的title值。
+
+.app.component.ts
+[source,typescript]
+----
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = '慕课网Angular入门实战'; <1>
+}
+----
+<1> 修改title属性。
+
+页面自动更新，变为:
+
+.慕课网Angular入门实战
+image::6.png[Angular,400]
+
+OK,到这里，我们已经完成了开发环境的搭建，下面，让我们用前面学到的知识，开发在线竞拍程序(Auction)的第一个版本。
+
+=== 正式开始Auction
+
