@@ -6,20 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = '慕课网Angular入门实战';
+  title = '慕课网Angualr入门实战';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
