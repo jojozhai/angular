@@ -17,7 +17,7 @@ export class AppComponent {
   }
 
   constructor() {
-    Observable.from([1,2,3,4])
+    var subscription = Observable.from([1,2,3,4])
       .filter((e) => e%2 == 0)
       .map((e) => e*e)
       .subscribe(
@@ -25,5 +25,7 @@ export class AppComponent {
         error => console.error(error),
         () => console.log("结束啦!")
       );
+
+    subscription.unsubscribe();
   }
 }

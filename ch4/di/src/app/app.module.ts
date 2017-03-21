@@ -38,4 +38,8 @@ import {AnotherProductService} from "./shared/another-product.service";
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
+  xxx(event) {
+    console.log(event);
+  }
 }

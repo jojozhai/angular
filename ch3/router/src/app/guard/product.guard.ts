@@ -1,6 +1,7 @@
 import {Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
 import {ProductComponent, Product} from "../product/product.component";
 import {Injectable} from "@angular/core";
+import {Observable} from "rxjs";
 /**
  * Created by zhailiang on 2017/1/23.
  */
@@ -16,7 +17,7 @@ export class ProductResolveGuard implements Resolve<ProductComponent> {
     let productId:number = route.params['id'];
 
     if(productId == 1) {
-      return new Product(1, 'iPhone7');
+      return undefined;
     }else{
       this.router.navigate(['/home']);
       return undefined;

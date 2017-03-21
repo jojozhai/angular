@@ -16,4 +16,6 @@ export class Product1Component implements OnInit {
     this.product = this.productService.getProduct();
   }
 
+  name:string = "Tom"
+
 }
