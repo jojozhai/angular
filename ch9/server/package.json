@@ -16,6 +16,9 @@
     "ws": "^2.1.0"
   },
   "devDependencies": {
-    "@types/ws": "0.0.38"
+    "@types/es6-shim": "0.0.30",
+    "@types/ws": "0.0.38",
+    "nodemon": "^1.8.1",
+    "typescript": "^2.0.0"
   }
 }
