@@ -64,7 +64,7 @@ export class ProductDetailComponent implements OnInit {
       this.subscription = null;
     }else{
       this.isWatched = true;
-      this.subscription = this.wsService.createObservableSocket("ws://localhost:8085", this.product.id)
+      this.subscription = this.wsService.createObservableSocket("ws://localhost:3085", this.product.id)
         .subscribe(
           products => {
             let product = products.find(p => p.productId === this.product.id);

@@ -34,13 +34,13 @@ app.get('/api/product/:id/comments', (req, res) => {
     res.json(comments.filter((comment: Comment) => comment.productId == req.params.id));
 });
 
-const server = app.listen(8000, "localhost", () => {
-    console.log("服务器已启动，地址是: http://localhost:8000");
+const server = app.listen(3000, "localhost", () => {
+    console.log("服务器已启动，地址是: http://localhost:3000");
 });
 
 const subscriptions = new Map<any, number[]>();
 
-const wsServer = new Server({port: 8085});
+const wsServer = new Server({port: 3085});
 wsServer.on("connection", websocket => {
     websocket.on('message', message => {
         let messageObj = JSON.parse(message);

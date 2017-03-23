@@ -1,9 +1,10 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by zhailiang on 2017/2/18.
  */
 var express = require("express");
-var path = require('path');
+var path = require("path");
 var ws_1 = require("ws");
 var app = express();
 app.use('/', express.static(path.join(__dirname, '..', 'client')));
@@ -27,11 +28,11 @@ app.get('/api/product/:id', function (req, res) {
 app.get('/api/product/:id/comments', function (req, res) {
     res.json(comments.filter(function (comment) { return comment.productId == req.params.id; }));
 });
-var server = app.listen(8000, "localhost", function () {
-    console.log("服务器已启动，地址是: http://localhost:8000");
+var server = app.listen(3000, "localhost", function () {
+    console.log("服务器已启动，地址是: http://localhost:3000");
 });
 var subscriptions = new Map();
-var wsServer = new ws_1.Server({ port: 8085 });
+var wsServer = new ws_1.Server({ port: 3085 });
 wsServer.on("connection", function (websocket) {
     websocket.on('message', function (message) {
         var messageObj = JSON.parse(message);
