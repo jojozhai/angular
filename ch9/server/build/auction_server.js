@@ -45,6 +45,9 @@ setInterval(function () {
     products.forEach(function (p) {
         var currentBid = currentBids.get(p.id) || p.price;
         var newBid = currentBid + Math.random() * 5;
+        if (newBid > 1000) {
+            newBid = 10;
+        }
         currentBids.set(p.id, newBid);
     });
     subscriptions.forEach(function (productIds, ws) {

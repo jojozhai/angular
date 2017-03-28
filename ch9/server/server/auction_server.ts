@@ -56,6 +56,9 @@ setInterval(() => {
     products.forEach( p => {
         let currentBid = currentBids.get(p.id) || p.price;
         let newBid = currentBid + Math.random() * 5;
+        if(newBid > 1000){
+            newBid = 10;
+        }
         currentBids.set(p.id, newBid);
     });
 
